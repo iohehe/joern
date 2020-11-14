@@ -47,11 +47,13 @@ public class Main {
 	public static void main(String[] args) throws InvalidCSVFile, IOException {
 
 		// parse command line
-		parseCommandLine(args);
+		//!parseCommandLine(args);
 
 		// initialize readers
-		String nodeFilename = cmdLine.getNodeFile();
-		String edgeFilename = cmdLine.getEdgeFile();
+		//!String nodeFilename = cmdLine.getNodeFile();
+		//!String edgeFilename = cmdLine.getEdgeFile();
+		String nodeFilename = "/Users/he/cpg/test_cpg/nodes.csv";
+		String edgeFilename = "/Users/he/cpg/test_cpg/rels.csv";
 		FileReader nodeFileReader = new FileReader(nodeFilename);
 		FileReader edgeFileReader = new FileReader(edgeFilename);
 
@@ -69,20 +71,23 @@ public class Main {
 		Writer.setWriterImpl( csvWriter);
 
 		// let's go...
+		//! 一次一个函数
 		FunctionDef rootnode;
 		while ((rootnode = (FunctionDef)extractor.getNextFunction()) != null) {
 
 			PHPCGFactory.addFunctionDef( rootnode);
-
+			//! CFG
 			CFG cfg = ast2cfgConverter.convert(rootnode);
 			csvCFGExporter.writeCFGEdges(cfg);
 
+			//! ddg
 			UseDefGraph udg = cfgToUDG.convert(cfg);
 			DefUseCFG defUseCFG = udgAndCfgToDefUseCFG.convert(cfg, udg);
 			DDG ddg = ddgCreator.createForDefUseCFG(defUseCFG);
 			csvDDGExporter.writeDDGEdges(ddg);
 		}
 
+		//! CALL graph
 		// now that we wrapped up all functions, let's finish off with the call graph
 		CG cg = PHPCGFactory.newInstance();
 		csvCGExporter.writeCGEdges(cg);
