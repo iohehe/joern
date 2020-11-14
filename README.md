@@ -1,16 +1,14 @@
-joern
+joern - pat
 ====
-
-**This version of joern has been discontinued.**
-
-**Joern lives on at https://github.com/ShiftLeftSecurity/joern**
-
-Source code analysis is full of graphs: abstract syntax trees, control
-flow graphs, call graphs, program dependency graphs and directory
-structures, to name a few. Joern analyzes a code base using a robust
-parser for C/C++ and represents the entire code base by one large
-property graph stored in a Neo4J graph database. This allows code to
-be mined using complex queries formulated in the graph traversal
-languages Gremlin and Cypher.
-
-The documentation can be found [here](http://joern.readthedocs.org/en/latest/)
+- [ ] Foreach
+```php
+<?php
+	$c = $_GET['id'];
+	foreach($c as $k => $v) {
+			echo $k;
+			echo $v;
+			echo $c;
+	}
+```
+- 问题： foreach内$k, $v无数据流；$c直接连接到赋值处。
+- 方案： $c是0孩子，$v是1孩子，$k是2孩子，stmt是3孩子。 1,2孩子内部建立数据边。
